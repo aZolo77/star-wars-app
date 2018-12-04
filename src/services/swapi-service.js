@@ -10,7 +10,7 @@ export default class SwapiService {
   }
 
   // transform Data about Planet [private]
-  _transformPlanet(planet) {
+  _transformPlanet = planet => {
     return {
       id: this._extractId(planet),
       name: planet.name,
@@ -18,33 +18,33 @@ export default class SwapiService {
       rotationPeriod: planet.rotation_period,
       diameter: planet.diameter
     };
-  }
+  };
 
   // transform Data about Person [private]
-  _transformPerson(person) {
+  _transformPerson = person => {
     return {
       id: this._extractId(person),
       name: person.name,
       gender: person.gender,
-      birthYear: person.birthYear,
-      eyeColor: person.eyeColor
+      birthYear: person.birth_year,
+      eyeColor: person.eye_color
     };
-  }
+  };
 
   // transform Data about Starship [private]
-  _transformStarship(ship) {
+  _transformStarship = ship => {
     return {
       id: this._extractId(ship),
       name: ship.name,
       model: ship.model,
       manufacturer: ship.manufacturer,
-      costInCredits: ship.costInCredits,
+      costInCredits: ship.cost_in_credits,
       length: ship.length,
       crew: ship.crew,
       passengers: ship.passengers,
-      cargoCapacity: ship.cargoCapacity
+      cargoCapacity: ship.cargo_capacity
     };
-  }
+  };
 
   // Request to API
   async getResource(url) {

@@ -11,9 +11,22 @@ import ErrorIndicator from '../error-indicator';
 import './random-planet.css';
 
 export default class RandomPlanet extends Component {
-  constructor() {
-    super();
+  // State of the Planet
+  state = {
+    planet: {},
+    loading: true,
+    error: false
+  };
+
+  // Component rendered first time (DOM is 100% ready)
+  componentDidMount() {
     this.updatePlanet();
+    // this.interval = setInterval(this.updatePlanet, 10000);
+  }
+
+  // arraised Before Component is going to be Deleted from the Page
+  componentWillUnmount() {
+    console.log('componentWillUnmount()');
   }
 
   // get service
@@ -30,21 +43,14 @@ export default class RandomPlanet extends Component {
     this.setState({ error: true, loading: false });
   };
 
-  // State of the Planet
-  state = {
-    planet: {},
-    loading: true,
-    error: false
-  };
-
   // get planet
-  updatePlanet() {
+  updatePlanet = () => {
     const id = Math.floor(Math.random() * 17) + 2;
     this.swapiService
       .getPlanet(id)
       .then(this._onPlanetLoaded)
       .catch(this._onError);
-  }
+  };
 
   render() {
     const { planet, loading, error } = this.state;
@@ -74,6 +80,7 @@ const PlanetView = ({ planet }) => {
       <img
         className="planet-image"
         src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
+        alt="random-planet"
       />
       <div>
         <h4>{name}</h4>

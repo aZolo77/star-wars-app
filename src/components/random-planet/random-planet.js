@@ -21,12 +21,13 @@ export default class RandomPlanet extends Component {
   // Component rendered first time (DOM is 100% ready)
   componentDidMount() {
     this.updatePlanet();
-    // this.interval = setInterval(this.updatePlanet, 10000);
+    this.interval = setInterval(this.updatePlanet, 10000);
   }
 
   // arraised Before Component is going to be Deleted from the Page
   componentWillUnmount() {
-    console.log('componentWillUnmount()');
+    // очищаем интервал
+    clearInterval(this.interval);
   }
 
   // get service

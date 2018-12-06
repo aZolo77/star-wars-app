@@ -21,6 +21,13 @@ export default class Header extends Component {
             <a href="/">Starships</a>
           </li>
         </ul>
+
+        <button
+          className="btn btn-primary btn-small"
+          onClick={this.props.onServiceChange}
+        >
+          Change Service
+        </button>
       </div>
     );
   }

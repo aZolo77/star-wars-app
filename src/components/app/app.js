@@ -1,45 +1,53 @@
 import React, { Component } from 'react';
 
+// = Context Provider
+import { SwapiServiceProvider } from '../swapi-service-context';
+
+// = Services
+import SwapiService from '../../services/swapi-service';
+import DummySwapiService from '../../services/dummy-swapi-service';
+
+// = Components
+import Header from '../header';
+import ErrorBoundry from '../error-boundry';
+// случайная планета
+import RandomPlanet from '../random-planet';
+// pages
+import { PeoplePage, PlanetPage, StarshipPage } from '../pages';
+
 // = styles
 import './app.css';
 
-// = components
-import Header from '../header';
-import ItemList from '../item-list';
-// случайная планета
-import RandomPlanet from '../random-planet';
-import PersonDetails from '../person-details';
-// import PlanetDetails from '../planet-details';
-// import StarshipDetails from '../starship-details';
-
 export default class App extends Component {
   state = {
-    showRandomPlanet: true,
-    selectedPerson: Math.floor(Math.random() * 10 + 1)
+    swapiService: new SwapiService()
   };
 
-  // static
-  _onPersonSelected = id => {
-    this.setState({
-      selectedPerson: id
+  // обновить сервис
+  onServiceChange = () => {
+    this.setState(({ swapiService }) => {
+      const Service =
+        swapiService instanceof SwapiService ? DummySwapiService : SwapiService;
+
+      return {
+        swapiService: new Service()
+      };
     });
   };
 
   render() {
     return (
-      <div>
-        <Header />
-        <RandomPlanet />
+      <ErrorBoundry>
+        <SwapiServiceProvider value={this.state.swapiService}>
+          <Header onServiceChange={this.onServiceChange} />
 
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList onItemSelected={this._onPersonSelected} />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPerson} />
-          </div>
-        </div>
-      </div>
+          <RandomPlanet />
+
+          <PeoplePage />
+          <PlanetPage />
+          <StarshipPage />
+        </SwapiServiceProvider>
+      </ErrorBoundry>
     );
   }
 }

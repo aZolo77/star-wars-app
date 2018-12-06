@@ -2,12 +2,13 @@
 export default class SwapiService {
   // private props
   _apiBase = 'https://swapi.co/api';
+  _imageUrlBase = 'https://starwars-visualguide.com/assets/img/';
 
   // get ID from URL
-  _extractId(item) {
+  _extractId = item => {
     const idRegExp = /\/([0-9]*)\/$/;
     return item.url.match(idRegExp)[1];
-  }
+  };
 
   // transform Data about Planet [private]
   _transformPlanet = planet => {
@@ -47,7 +48,7 @@ export default class SwapiService {
   };
 
   // Request to API
-  async getResource(url) {
+  getResource = async url => {
     const res = await fetch(`${this._apiBase}${url}`);
 
     if (!res.ok) {
@@ -55,41 +56,57 @@ export default class SwapiService {
     }
 
     return await res.json();
-  }
+  };
 
   // ===== get All Heroes =======================
-  async getAllPeople() {
+  getAllPeople = async () => {
     const res = await this.getResource('/people/');
-    return res.results.map(this._transformPerson);
-  }
+    const arr = res.results.slice(0, 6);
+    return arr.map(this._transformPerson);
+  };
 
   // get one Hero
-  async getPerson(id) {
+  getPerson = async id => {
     const person = await this.getResource(`/people/${id}`);
     return this._transformPerson(person);
-  }
+  };
 
   // ===== get All Planets =======================
-  async getAllPlanets() {
+  getAllPlanets = async () => {
     const res = await this.getResource('/planets/');
-    return res.results.map(this._transformPlanet);
-  }
+    const arr = res.results.slice(0, 6);
+    return arr.map(this._transformPlanet);
+  };
 
   // get one Planet
-  async getPlanet(id) {
+  getPlanet = async id => {
     const planet = await this.getResource(`/planets/${id}`);
     return this._transformPlanet(planet);
-  }
+  };
 
   // ===== get All StarShips ======================
-  async getAllStarships() {
+  getAllStarships = async () => {
     const res = await this.getResource('/starships/');
-    return res.results.map(this._transformStarship);
-  }
+    const arr = res.results.slice(0, 6);
+    return arr.map(this._transformStarship);
+  };
 
   // get one StarShip
-  async getStarship(id) {
+  getStarship = async id => {
     const ship = await this.getResource(`/starships/${id}`);
     return this._transformStarship(ship);
-  }
+  };
+
+  // get images URL
+  getPersonImage = ({ id }) => {
+    return `${this._imageUrlBase}characters/${id}.jpg`;
+  };
+
+  getPlanetImage = ({ id }) => {
+    return `${this._imageUrlBase}planets/${id}.jpg`;
+  };
+
+  getStarshipImage = ({ id }) => {
+    return `${this._imageUrlBase}starships/${id}.jpg`;
+  };
 }

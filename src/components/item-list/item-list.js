@@ -1,9 +1,23 @@
+// libraries
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // styles
 import './item-list.css';
 
 class ItemList extends Component {
+  // = значения props по-умолчанию
+  static defaultProps = {
+    onItemSelected: () => console.log('Default')
+  };
+
+  // required Types
+  static propTypes = {
+    onItemSelected: PropTypes.func,
+    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+    children: PropTypes.func.isRequired
+  };
+
   // render Heroes List
   renderItems(arr) {
     return arr.map(item => {

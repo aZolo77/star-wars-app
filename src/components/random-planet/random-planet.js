@@ -1,4 +1,6 @@
+// libraries
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // services
 import SwapiService from '../../services/swapi-service';
@@ -18,10 +20,22 @@ export default class RandomPlanet extends Component {
     error: false
   };
 
+  // default props
+  static defaultProps = {
+    updateInterval: 10000
+  };
+
+  // Замена TypeScript - используем библиотеку PropTypes
+  static propTypes = {
+    // берём любое переданное свойство и делаем проверку
+    updateInterval: PropTypes.number
+  };
+
   // Component rendered first time (DOM is 100% ready)
   componentDidMount() {
+    const { updateInterval } = this.props;
     this.updatePlanet();
-    this.interval = setInterval(this.updatePlanet, 10000);
+    this.interval = setInterval(this.updatePlanet, updateInterval);
   }
 
   // arraised Before Component is going to be Deleted from the Page

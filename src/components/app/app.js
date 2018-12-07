@@ -1,4 +1,6 @@
+// libraries
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 // = Context Provider
 import { SwapiServiceProvider } from '../swapi-service-context';
@@ -39,13 +41,23 @@ export default class App extends Component {
     return (
       <ErrorBoundry>
         <SwapiServiceProvider value={this.state.swapiService}>
-          <Header onServiceChange={this.onServiceChange} />
+          <Router>
+            <div className="stardb-app">
+              <Header onServiceChange={this.onServiceChange} />
 
-          <RandomPlanet updateInterval={10000} />
+              <RandomPlanet updateInterval={10000} />
 
-          <PeoplePage />
-          <PlanetPage />
-          <StarshipPage />
+              {/* Routing [exact - точное совпадение] */}
+              <Route
+                path="/"
+                render={() => <h2>Welcome to Star Db!</h2>}
+                exact
+              />
+              <Route path="/people" component={PeoplePage} />
+              <Route path="/planets" component={PlanetPage} />
+              <Route path="/starships" component={StarshipPage} />
+            </div>
+          </Router>
         </SwapiServiceProvider>
       </ErrorBoundry>
     );

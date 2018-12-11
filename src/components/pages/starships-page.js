@@ -1,36 +1,23 @@
-import React, { Component } from 'react';
+// libraries
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 // components
-import Row from '../row';
-import { StarshipDetails, StarshipList } from '../sw-components';
+import { StarshipList } from '../sw-components';
 import ErrorBoundry from '../error-boundry';
 
 // styles
 import './pages.css';
 
-export default class StarshipPage extends Component {
-  state = {
-    selectedItem: null
-  };
+const StarshipPage = ({ match, location, history }) => {
+  // возвращает компоненты в качестве параметров
+  return (
+    <ErrorBoundry>
+      {/* переход на сл страницу (путь относительный) */}
+      <StarshipList onItemSelected={id => history.push(id)} />
+    </ErrorBoundry>
+  );
+};
 
-  // private methods
-  _onItemSelected = selectedItem => {
-    this.setState({
-      selectedItem
-    });
-  };
-
-  render() {
-    const { selectedItem } = this.state;
-
-    // возвращает компоненты в качестве параметров
-    return (
-      <ErrorBoundry>
-        <Row
-          leftElem={<StarshipList onItemSelected={this._onItemSelected} />}
-          rightElem={<StarshipDetails itemId={selectedItem} />}
-        />
-      </ErrorBoundry>
-    );
-  }
-}
+// HOC-fn from react-router - передаёт компоненту объект с {match, location, history} параметрами
+export default withRouter(StarshipPage);
